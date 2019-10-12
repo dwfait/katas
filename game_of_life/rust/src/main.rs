@@ -1,3 +1,22 @@
+fn main() {
+    println!("Hello world!");
+
+    let mut g = Game::new(10, 10);
+
+    // Set up a glider:
+    g.set_cell(1, 2, true);
+    g.set_cell(2, 2, true);
+    g.set_cell(3, 2, true);
+    g.set_cell(3, 1, true);
+    g.set_cell(2, 0, true);
+
+    for _i in 0..30 {
+        g.new_generation();
+        g.print_state();
+        std::thread::sleep(std::time::Duration::from_millis(1000));
+    }
+}
+
 struct Game {
     x: usize,
     y: usize,
@@ -57,6 +76,21 @@ impl Game {
         }
 
         self.board = new_board;
+    }
+
+    fn print_state(&self) {
+        println!("Game state: ");
+        for y in 0..self.y {
+            let mut output: Vec<&str> = vec![];
+            for x in 0..self.x {
+                if self.board[x][y] {
+                    output.push("*")
+                } else {
+                    output.push(".")
+                }
+            }
+            println!("{}", output.join(" "));
+        }
     }
 }
 
