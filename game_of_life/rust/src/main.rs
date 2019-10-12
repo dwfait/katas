@@ -81,15 +81,14 @@ impl Game {
     fn print_state(&self) {
         println!("Game state: ");
         for y in 0..self.y {
-            let mut output: Vec<&str> = vec![];
             for x in 0..self.x {
                 if self.board[x][y] {
-                    output.push("*")
+                    print!("* ");
                 } else {
-                    output.push(".")
+                    print!(". ");
                 }
             }
-            println!("{}", output.join(" "));
+            println!("");
         }
     }
 }
