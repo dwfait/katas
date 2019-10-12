@@ -40,27 +40,34 @@ impl Game {
         return self.board[x][y];
     }
 
+    fn get_neighbourhood_count(&self, x: usize, y: usize) -> usize {
+        let mut neighbourhood: usize = 0;
+        let start_x: usize = std::cmp::max((x as i32) - 1, 0) as usize;
+        let end_x: usize = std::cmp::min(x + 1, self.x - 1) as usize;
+        let start_y: usize = std::cmp::max((y as i32) - 1, 0) as usize;
+        let end_y: usize = std::cmp::min(y + 1, self.y - 1) as usize;
+
+        for ix in start_x..=end_x {
+            for iy in start_y..=end_y {
+                if ix == x && iy == y {
+                    continue;
+                }
+                if self.board[ix][iy] == true {
+                    neighbourhood += 1;
+                }
+            }
+        }
+
+        return neighbourhood;
+    }
+
     fn new_generation(&mut self) {
         let mut new_board: Vec<Vec<bool>> = vec![vec![false; self.y]; self.x];
 
         for x in 0..self.x {
             for y in 0..self.y {
-                let mut neighbourhood: usize = 0;
-                let start_x: usize = std::cmp::max((x as i32) - 1, 0) as usize;
-                let end_x: usize = std::cmp::min(x + 1, self.x - 1) as usize;
-                let start_y: usize = std::cmp::max((y as i32) - 1, 0) as usize;
-                let end_y: usize = std::cmp::min(y + 1, self.y - 1) as usize;
+                let neighbourhood = self.get_neighbourhood_count(x, y);
 
-                for ix in start_x..=end_x {
-                    for iy in start_y..=end_y {
-                        if ix == x && iy == y {
-                            continue;
-                        }
-                        if self.board[ix][iy] == true {
-                            neighbourhood += 1;
-                        }
-                    }
-                }
                 if self.board[x][y] == true {
                     if neighbourhood == 2 || neighbourhood == 3 {
                         new_board[x][y] = true;
