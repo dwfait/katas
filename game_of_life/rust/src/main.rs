@@ -1,6 +1,4 @@
 fn main() {
-    println!("Hello world!");
-
     let mut g = Game::new(10, 10);
 
     // Set up a glider:
@@ -17,17 +15,19 @@ fn main() {
     }
 }
 
-struct Game {
-    x: usize,
-    y: usize,
+struct Board {
     board: Vec<Vec<bool>>,
 }
 
-impl Game {
-    fn new(x: usize, y: usize) -> Game {
-        Game {
-            x: x,
-            y: y,
+struct Game {
+    x: usize,
+    y: usize,
+    board: Board,
+}
+
+impl Board {
+    fn new(x: usize, y: usize) -> Board {
+        Board {
             board: vec![vec![false; y]; x],
         }
     }
@@ -38,6 +38,24 @@ impl Game {
 
     fn get_cell(&self, x: usize, y: usize) -> bool {
         return self.board[x][y];
+    }
+}
+
+impl Game {
+    fn new(x: usize, y: usize) -> Game {
+        Game {
+            x: x,
+            y: y,
+            board: Board::new(x, y),
+        }
+    }
+
+    fn set_cell(&mut self, x: usize, y: usize, value: bool) {
+        self.board.set_cell(x, y, value);
+    }
+
+    fn get_cell(&self, x: usize, y: usize) -> bool {
+        return self.board.get_cell(x, y);
     }
 
     fn get_neighbourhood_count(&self, x: usize, y: usize) -> usize {
@@ -52,7 +70,7 @@ impl Game {
                 if ix == x && iy == y {
                     continue;
                 }
-                if self.board[ix][iy] == true {
+                if self.board.get_cell(ix, iy) {
                     neighbourhood += 1;
                 }
             }
@@ -62,21 +80,21 @@ impl Game {
     }
 
     fn new_generation(&mut self) {
-        let mut new_board: Vec<Vec<bool>> = vec![vec![false; self.y]; self.x];
+        let mut new_board: Board = Board::new(self.x, self.y);
 
         for x in 0..self.x {
             for y in 0..self.y {
                 let neighbourhood = self.get_neighbourhood_count(x, y);
 
-                if self.board[x][y] == true {
+                if self.board.get_cell(x, y) {
                     if neighbourhood == 2 || neighbourhood == 3 {
-                        new_board[x][y] = true;
+                        new_board.set_cell(x, y, true);
                     } else {
-                        new_board[x][y] = false;
+                        new_board.set_cell(x, y, false);
                     }
                 } else {
                     if neighbourhood == 3 {
-                        new_board[x][y] = true;
+                        new_board.set_cell(x, y, true);
                     }
                 }
             }
@@ -89,7 +107,7 @@ impl Game {
         println!("Game state: ");
         for y in 0..self.y {
             for x in 0..self.x {
-                if self.board[x][y] {
+                if self.board.get_cell(x, y) {
                     print!("* ");
                 } else {
                     print!(". ");
