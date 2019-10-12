@@ -61,9 +61,9 @@ impl Game {
     fn get_neighbourhood_count(&self, x: usize, y: usize) -> usize {
         let mut neighbourhood: usize = 0;
         let start_x: usize = std::cmp::max((x as i32) - 1, 0) as usize;
-        let end_x: usize = std::cmp::min(x + 1, self.x - 1) as usize;
+        let end_x: usize = std::cmp::min(x + 1, self.x - 1);
         let start_y: usize = std::cmp::max((y as i32) - 1, 0) as usize;
-        let end_y: usize = std::cmp::min(y + 1, self.y - 1) as usize;
+        let end_y: usize = std::cmp::min(y + 1, self.y - 1);
 
         for ix in start_x..=end_x {
             for iy in start_y..=end_y {
@@ -80,7 +80,7 @@ impl Game {
     }
 
     fn new_generation(&mut self) {
-        let mut new_board: Board = Board::new(self.x, self.y);
+        let mut new_board = Board::new(self.x, self.y);
 
         for x in 0..self.x {
             for y in 0..self.y {
