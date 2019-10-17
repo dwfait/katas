@@ -35,6 +35,61 @@ class TestGameOfLife(unittest.TestCase):
         board.next_generation()
         self.assertEqual(board.get_cell(0, 0), True)
 
+    def test_rule2_more_than_3_neighbours(self):
+        board = game_of_life.GameOfLife(3, 3)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(0, 2, True)
+        board.set_cell(1, 0, True)
+        board.set_cell(1, 1, True)
+        board.set_cell(2, 1, True)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 1), False)
+
+    def test_rule3_two_neighbours_lives(self):
+        board = game_of_life.GameOfLife(2, 2)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(1, 0, True)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 0), True)
+
+    def test_rule3_three_neighbours_lives(self):
+        board = game_of_life.GameOfLife(2, 2)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(1, 0, True)
+        board.set_cell(1, 1, True)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 1), True)
+
+    def test_rule4_dead_with_3_neighbours_becomes_alive(self):
+        board = game_of_life.GameOfLife(2, 2)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(1, 0, True)
+        board.set_cell(1, 1, False)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 1), True)
+
+    def test_rule4_dead_with_4_neighbours_stays_dead(self):
+        board = game_of_life.GameOfLife(3, 3)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(1, 0, True)
+        board.set_cell(1, 1, False)
+        board.set_cell(2, 1, True)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 1), False)
+
+    def test_rule4_dead_with_2_neighbours_stays_dead(self):
+        board = game_of_life.GameOfLife(2, 2)
+        board.set_cell(0, 0, True)
+        board.set_cell(0, 1, True)
+        board.set_cell(1, 0, False)
+        board.next_generation()
+        self.assertEqual(board.get_cell(1, 0), False)
+
 
 if __name__ == '__main__':
     unittest.main()

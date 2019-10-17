@@ -21,17 +21,17 @@ class GameOfLife():
         return neighbourhood
 
     def next_generation(self):
-        self.cells[0][0] = False
-
         new_cells = [[False for i in range(self.y)] for j in range(self.x)]
 
         for x in range(self.x):
             for y in range(self.y):
                 neighbourhood = self.get_neighbourhood(x, y)
 
-                if neighbourhood < 2:
-                    new_cells[x][y] = False
+                if self.cells[x][y]:
+                    if neighbourhood == 2 or neighbourhood == 3:
+                        new_cells[x][y] = True
                 else:
-                    new_cells[x][y] = True
+                    if neighbourhood == 3:
+                        new_cells[x][y] = True
 
         self.cells = new_cells
