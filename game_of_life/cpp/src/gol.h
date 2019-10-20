@@ -27,4 +27,6 @@ public:
 
 private:
   CellsPtr init_cells();
+
+  size_t get_neighbourhood(size_t x, size_t y);
 };
