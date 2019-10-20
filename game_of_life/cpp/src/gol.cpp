@@ -25,8 +25,13 @@ void GOL::next_generation() {
     for (size_t iy = 0; iy < this->y; ++iy) {
       auto neighbourhood = this->get_neighbourhood(ix, iy);
 
-      if (neighbourhood >= 2)
-        (*new_cells)[ix][iy] = true;
+      if (this->get_cell(ix, iy) == true) {
+        if (neighbourhood == 2 || neighbourhood == 3)
+          (*new_cells)[ix][iy] = true;
+      } else {
+        if (neighbourhood == 3)
+          (*new_cells)[ix][iy] = true;
+      }
     }
   }
 
