@@ -1,7 +1,9 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
+#define CATCH_CONFIG_MAIN
 #include "../src/gol.h"
+#include "catch.hpp"
 
-TEST_CASE("Blah blah blah", "blah") {
-  REQUIRE(test_fun() == 42);
+TEST_CASE("Creating a Game of Life board", "[gol]") {
+  GOL game(1, 2);
+  REQUIRE(game.get_x() == 1);
+  REQUIRE(game.get_y() == 2);
 }
